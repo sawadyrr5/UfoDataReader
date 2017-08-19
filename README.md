@@ -1,0 +1,2 @@
+# UfoDataReader
+ufoキャッチャーからXBRLデータを手軽にダウンロードするためのクラス
