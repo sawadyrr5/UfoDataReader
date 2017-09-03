@@ -3,18 +3,18 @@
 import warnings
 import requests
 import xml.etree.ElementTree as ElemTree
-from pandas import compat, DataFrame
 from pandas_datareader import data
 from pandas_datareader.base import _DailyBaseReader, _in_chunks
-from pandas_datareader._utils import RemoteDataError, SymbolWarning
-from datetime import datetime
-from dateutil import parser
 from time import sleep
+from dateutil import parser
+import pandas.compat as compat
+from pandas import DataFrame
+from pandas_datareader._utils import RemoteDataError, SymbolWarning
 from io import BytesIO
 from zipfile import ZipFile
 
 _SLEEP_TIME = 1.0
-_MAX_RETRY_COUNT = 3
+_MAX_RETRY_COUNT = 2
 
 
 class UfoReader(_DailyBaseReader):
@@ -98,7 +98,7 @@ class UfoReader(_DailyBaseReader):
                     if r.ok:
                         z = ZipFile(BytesIO(r.content))
                         for info in z.infolist():
-                            if is_yuho and '.xbrl' in info.filename and 'PublicDoc' in info.filename:
+                            if is_yuho and '.xbrl' in info.filename and 'AuditDoc' not in info.filename:
                                 self.xbrl_filename = info.filename.split('/')[-1]
                                 z.extract(info.filename)
 
