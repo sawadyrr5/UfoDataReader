@@ -189,7 +189,7 @@ class UfoXBRLParser(XBRLParser):
             basic_eps = \
                 xbrl.find_all(name=re.compile('jpcrp_cor:BasicEarningsLossPerShareUSGAAPSummaryOfBusinessResults',
                                               re.IGNORECASE | re.MULTILINE))
-            gaap_obj.eps = \
+            gaap_obj.basic_eps = \
                 self.data_processing(basic_eps, xbrl, ignore_errors, logger, context_ids)
 
             diluted_eps = \
@@ -416,7 +416,8 @@ class USGAAP(object):
                  per=0.0,
                  cashflow_from_operation=0.0,
                  cashflow_from_investing=0.0,
-                 cashflow_from_financing=0.0):
+                 cashflow_from_financing=0.0,
+                 shares_outstanding=0.0):
         self.revenues = revenues
         self.operating_income_loss = operating_income_loss
         self.profit_loss_before_tax = profit_loss_before_tax
@@ -428,6 +429,7 @@ class USGAAP(object):
         self.cashflow_from_operation = cashflow_from_operation
         self.cashflow_from_investing = cashflow_from_investing
         self.cashflow_from_financing = cashflow_from_financing
+        self.shares_outstanding = shares_outstanding
 
 
 # Base Japan GAAP object
@@ -447,7 +449,8 @@ class JapanGAAP(object):
                  per=0.0,
                  cashflow_from_operation=0.0,
                  cashflow_from_investing=0.0,
-                 cashflow_from_financing=0.0):
+                 cashflow_from_financing=0.0,
+                 shares_outstanding=0.0):
         self.netsales = netsales
         self.ordinary_income_loss = ordinary_income_loss
         self.profit_loss = profit_loss
@@ -463,6 +466,7 @@ class JapanGAAP(object):
         self.cashflow_from_operation = cashflow_from_operation
         self.cashflow_from_investing = cashflow_from_investing
         self.cashflow_from_financing = cashflow_from_financing
+        self.shares_outstanding = shares_outstanding
 
 
 # Base DEI object
@@ -471,14 +475,12 @@ class DEI(object):
                  edinet_code='',
                  trading_symbol='',
                  company_name='',
-                 shares_outstanding=0.0,
                  accounting_standards='',
                  current_fy_start='',
                  current_fy_end=''):
         self.edinet_code = edinet_code
         self.trading_symbol = trading_symbol
         self.company_name = company_name
-        self.shares_outstanding = shares_outstanding
         self.accounting_standards = accounting_standards
         self.current_fy_start = current_fy_start
         self.current_fy_end = current_fy_end
