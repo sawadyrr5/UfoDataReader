@@ -101,6 +101,12 @@ class UfoXBRLParser(XBRLParser):
             gaap_obj.bps = \
                 self.data_processing(bps, xbrl, ignore_errors, logger, context_ids)
 
+            dps = \
+                xbrl.find_all(name=re.compile('jpcrp_cor:DividendPaidPerShareSummaryOfBusinessResults',
+                                              re.IGNORECASE | re.MULTILINE))
+            gaap_obj.dps = \
+                self.data_processing(dps, xbrl, ignore_errors, logger, context_ids)
+
             basic_eps = \
                 xbrl.find_all(name=re.compile('jpcrp_cor:BasicEarningsLossPerShareSummaryOfBusinessResults',
                                               re.IGNORECASE | re.MULTILINE))
@@ -442,6 +448,7 @@ class JapanGAAP(object):
                  net_assets=0.0,
                  total_assets=0.0,
                  bps=0.0,
+                 dps=0.0,
                  basic_eps=0.0,
                  diluted_eps=0.0,
                  equity_to_asset_ratio=0.0,
@@ -458,6 +465,7 @@ class JapanGAAP(object):
         self.net_assets = net_assets
         self.total_assets = total_assets
         self.bps = bps
+        self.dps = dps
         self.basic_eps = basic_eps
         self.diluted_eps = diluted_eps
         self.equity_to_asset_ratio = equity_to_asset_ratio
@@ -467,6 +475,8 @@ class JapanGAAP(object):
         self.cashflow_from_investing = cashflow_from_investing
         self.cashflow_from_financing = cashflow_from_financing
         self.shares_outstanding = shares_outstanding
+        self.cfps = ( cashflow_from_operation + cashflow_from_investing + cashflow_from_financing ) / shares_outstanding
+        self.sps = netsales / shares_outstanding
 
 
 # Base DEI object
