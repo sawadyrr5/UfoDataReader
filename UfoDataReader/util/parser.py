@@ -138,26 +138,26 @@ class UfoXBRLParser(XBRLParser):
             gaap_obj.per = \
                 self.data_processing(per, xbrl, ignore_errors, logger, context_ids)
 
-            cashflow_from_operation = \
+            cf_from_operation = \
                 xbrl.find_all(
                     name=re.compile('jpcrp_cor:NetCashProvidedByUsedInOperatingActivitiesSummaryOfBusinessResults',
                                     re.IGNORECASE | re.MULTILINE))
             gaap_obj.cf_operation = \
-                self.data_processing(cashflow_from_operation, xbrl, ignore_errors, logger, context_ids)
+                self.data_processing(cf_from_operation, xbrl, ignore_errors, logger, context_ids)
 
-            cashflow_from_investing = \
+            cf_from_investing = \
                 xbrl.find_all(
                     name=re.compile('jpcrp_cor:NetCashProvidedByUsedInInvestingActivitiesSummaryOfBusinessResults',
                                     re.IGNORECASE | re.MULTILINE))
-            gaap_obj.cashflow_from_investing = \
-                self.data_processing(cashflow_from_investing, xbrl, ignore_errors, logger, context_ids)
+            gaap_obj.cf_from_investing = \
+                self.data_processing(cf_from_investing, xbrl, ignore_errors, logger, context_ids)
 
-            cashflow_from_financing = \
+            cf_from_financing = \
                 xbrl.find_all(
                     name=re.compile('jpcrp_cor:NetCashProvidedByUsedInFinancingActivitiesSummaryOfBusinessResults',
                                     re.IGNORECASE | re.MULTILINE))
-            gaap_obj.cashflow_from_financing = \
-                self.data_processing(cashflow_from_financing, xbrl, ignore_errors, logger, context_ids)
+            gaap_obj.cf_from_financing = \
+                self.data_processing(cf_from_financing, xbrl, ignore_errors, logger, context_ids)
 
         # incomes
         if dei.accounting_standards == 'US GAAP':
@@ -211,12 +211,12 @@ class UfoXBRLParser(XBRLParser):
             gaap_obj.per = \
                 self.data_processing(per, xbrl, ignore_errors, logger, context_ids)
 
-            cashflow_from_operation = \
+            cf_from_operation = \
                 xbrl.find_all(
                     name=re.compile('jpcrp_cor:CashFlowsFromUsedInOperatingActivitiesUSGAAPSummaryOfBusinessResults',
                                     re.IGNORECASE | re.MULTILINE))
-            gaap_obj.cashflow_from_operation = \
-                self.data_processing(cashflow_from_operation, xbrl, ignore_errors, logger, context_ids)
+            gaap_obj.cf_from_operation = \
+                self.data_processing(cf_from_operation, xbrl, ignore_errors, logger, context_ids)
 
             cf_from_investing = \
                 xbrl.find_all(
@@ -234,19 +234,19 @@ class UfoXBRLParser(XBRLParser):
 
         # balance
         shares_outstanding = \
-            xbrl.find_all(name=re.compile("(jpcrp_cor:TotalNumberOfIssuedSharesSummaryOfBusinessResults)",
+            xbrl.find_all(name=re.compile('jpcrp_cor:TotalNumberOfIssuedSharesSummaryOfBusinessResults',
                                           re.IGNORECASE | re.MULTILINE))
         gaap_obj.shares_outstanding = \
             self.data_processing(shares_outstanding, xbrl, ignore_errors, logger, context_ids)
 
         assets = \
-            xbrl.find_all(name=re.compile("jppfs_cor:Assets",
+            xbrl.find_all(name=re.compile('jppfs_cor:Assets',
                                           re.IGNORECASE | re.MULTILINE))
         gaap_obj.assets = \
             self.data_processing(assets, xbrl, ignore_errors, logger, context_ids)
 
         current_assets = \
-            xbrl.find_all(name=re.compile("jppfs_cor:CurrentAssets",
+            xbrl.find_all(name=re.compile('jppfs_cor:CurrentAssets',
                                           re.IGNORECASE | re.MULTILINE))
         gaap_obj.current_assets = \
             self.data_processing(current_assets, xbrl, ignore_errors, logger, context_ids)
@@ -357,7 +357,7 @@ class UfoXBRLParser(XBRLParser):
 
         # DEI
         edinet_code = \
-            xbrl.find_all(name=re.compile("(jpdei_cor:EDINETCodeDEI)",
+            xbrl.find_all(name=re.compile('jpdei_cor:EDINETCodeDEI',
                                           re.IGNORECASE | re.MULTILINE))
         dei_obj.edinet_code = \
             self.data_processing(edinet_code, xbrl, ignore_errors, logger,
@@ -365,14 +365,14 @@ class UfoXBRLParser(XBRLParser):
                                           'no_context': True})
 
         trading_symbol = \
-            xbrl.find_all(name=re.compile("(jpdei_cor:SecurityCodeDei)", re.IGNORECASE | re.MULTILINE))
+            xbrl.find_all(name=re.compile('jpdei_cor:SecurityCodeDei', re.IGNORECASE | re.MULTILINE))
         dei_obj.trading_symbol = \
             self.data_processing(trading_symbol, xbrl, ignore_errors, logger,
                                  options={'type': 'String',
                                           'no_context': True})
 
         company_name = \
-            xbrl.find_all(name=re.compile("(jpcrp_cor:CompanyNameCoverPage)",
+            xbrl.find_all(name=re.compile('jpcrp_cor:CompanyNameCoverPage',
                                           re.IGNORECASE | re.MULTILINE))
         dei_obj.company_name = \
             self.data_processing(company_name, xbrl, ignore_errors, logger,
@@ -380,7 +380,7 @@ class UfoXBRLParser(XBRLParser):
                                           'no_context': True})
 
         accounting_standards = \
-            xbrl.find_all(name=re.compile("(jpdei_cor:AccountingStandardsDEI)",
+            xbrl.find_all(name=re.compile('jpdei_cor:AccountingStandardsDEI',
                                           re.IGNORECASE | re.MULTILINE))
         dei_obj.accounting_standards = \
             self.data_processing(accounting_standards, xbrl, ignore_errors, logger,
@@ -388,7 +388,7 @@ class UfoXBRLParser(XBRLParser):
                                           'no_context': True})
 
         current_fy_start = \
-            xbrl.find_all(name=re.compile("(jpdei_cor:CurrentFiscalYearStartDateDei)",
+            xbrl.find_all(name=re.compile('jpdei_cor:CurrentFiscalYearStartDateDei',
                                           re.IGNORECASE | re.MULTILINE))
         dei_obj.current_fy_start = \
             self.data_processing(current_fy_start, xbrl, ignore_errors, logger,
@@ -396,7 +396,7 @@ class UfoXBRLParser(XBRLParser):
                                           'no_context': True})
 
         current_fy_end = \
-            xbrl.find_all(name=re.compile("(jpdei_cor:CurrentFiscalYearEndDateDei)",
+            xbrl.find_all(name=re.compile('jpdei_cor:CurrentFiscalYearEndDateDei',
                                           re.IGNORECASE | re.MULTILINE))
         dei_obj.current_fy_end = \
             self.data_processing(current_fy_end, xbrl, ignore_errors, logger,
