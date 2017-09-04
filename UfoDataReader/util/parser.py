@@ -318,7 +318,7 @@ class UfoXBRLParser(XBRLParser):
             elements = correct_elements
 
             if elements:
-                return elements[0].text
+                return XBRLParser().trim_decimals(elements[0].text, int(xbrl.precision))
             else:
                 return 0
                 # if len(elements) > 0 and XBRLParser().is_number(elements[0].text):
