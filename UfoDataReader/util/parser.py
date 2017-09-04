@@ -141,7 +141,7 @@ class UfoXBRLParser(XBRLParser):
                 xbrl.find_all(
                     name=re.compile('jpcrp_cor:NetCashProvidedByUsedInOperatingActivitiesSummaryOfBusinessResults',
                                     re.IGNORECASE | re.MULTILINE))
-            gaap_obj.cashflow_from_operation = \
+            gaap_obj.cf_operation = \
                 self.data_processing(cashflow_from_operation, xbrl, ignore_errors, logger, context_ids)
 
             cashflow_from_investing = \
@@ -217,19 +217,19 @@ class UfoXBRLParser(XBRLParser):
             gaap_obj.cashflow_from_operation = \
                 self.data_processing(cashflow_from_operation, xbrl, ignore_errors, logger, context_ids)
 
-            cashflow_from_investing = \
+            cf_from_investing = \
                 xbrl.find_all(
                     name=re.compile('jpcrp_cor:CashFlowsFromUsedInInvestingActivitiesUSGAAPSummaryOfBusinessResults',
                                     re.IGNORECASE | re.MULTILINE))
-            gaap_obj.cashflow_from_investing = \
-                self.data_processing(cashflow_from_investing, xbrl, ignore_errors, logger, context_ids)
+            gaap_obj.cf_from_investing = \
+                self.data_processing(cf_from_investing, xbrl, ignore_errors, logger, context_ids)
 
-            cashflow_from_financing = \
+            cf_from_financing = \
                 xbrl.find_all(
                     name=re.compile('jpcrp_cor:CashFlowsFromUsedInFinancingActivitiesUSGAAPSummaryOfBusinessResults',
                                     re.IGNORECASE | re.MULTILINE))
-            gaap_obj.cashflow_from_financing = \
-                self.data_processing(cashflow_from_financing, xbrl, ignore_errors, logger, context_ids)
+            gaap_obj.cf_from_financing = \
+                self.data_processing(cf_from_financing, xbrl, ignore_errors, logger, context_ids)
 
         # balance
         shares_outstanding = \
@@ -279,7 +279,6 @@ class UfoXBRLParser(XBRLParser):
                                           re.IGNORECASE | re.MULTILINE))
         gaap_obj.net_assets = \
             self.data_processing(net_assets, xbrl, ignore_errors, logger, context_ids)
-
 
         return gaap_obj
 
@@ -421,9 +420,9 @@ class USGAAP(object):
                  basic_eps=0.0,
                  diluted_eps=0.0,
                  per=0.0,
-                 cashflow_from_operation=0.0,
-                 cashflow_from_investing=0.0,
-                 cashflow_from_financing=0.0,
+                 cf_from_operating=0.0,
+                 cf_from_investing=0.0,
+                 cf_from_financing=0.0,
                  shares_outstanding=0.0):
         self.revenues = revenues
         self.operating_income_loss = operating_income_loss
@@ -433,9 +432,9 @@ class USGAAP(object):
         self.basic_eps = basic_eps
         self.diluted_eps = diluted_eps
         self.per = per
-        self.cashflow_from_operation = cashflow_from_operation
-        self.cashflow_from_investing = cashflow_from_investing
-        self.cashflow_from_financing = cashflow_from_financing
+        self.cf_from_operating = cf_from_operating
+        self.cf_from_investing = cf_from_investing
+        self.cf_from_financing = cf_from_financing
         self.shares_outstanding = shares_outstanding
 
 
@@ -455,9 +454,9 @@ class JapanGAAP(object):
                  equity_to_asset_ratio=0.0,
                  roe=0.0,
                  per=0.0,
-                 cashflow_from_operation=0.0,
-                 cashflow_from_investing=0.0,
-                 cashflow_from_financing=0.0,
+                 cf_from_operating=0.0,
+                 cf_from_investing=0.0,
+                 cf_from_financing=0.0,
                  shares_outstanding=0.0):
         self.netsales = netsales
         self.ordinary_income_loss = ordinary_income_loss
@@ -472,12 +471,10 @@ class JapanGAAP(object):
         self.equity_to_asset_ratio = equity_to_asset_ratio
         self.roe = roe
         self.per = per
-        self.cashflow_from_operation = cashflow_from_operation
-        self.cashflow_from_investing = cashflow_from_investing
-        self.cashflow_from_financing = cashflow_from_financing
+        self.cf_from_operating = cf_from_operating
+        self.cf_from_investing = cf_from_investing
+        self.cf_from_financing = cf_from_financing
         self.shares_outstanding = shares_outstanding
-        self.cfps = ( cashflow_from_operation + cashflow_from_investing + cashflow_from_financing ) / shares_outstanding
-        self.sps = netsales / shares_outstanding
 
 
 # Base DEI object
