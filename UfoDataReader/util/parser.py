@@ -319,7 +319,7 @@ class UfoXBRLParser(XBRLParser):
             elements = correct_elements
 
             if len(elements) > 0 and XBRLParser().is_number(elements[0].text):
-                return elements[0].text
+                return float(elements[0].text)
             else:
                 return 0
 
