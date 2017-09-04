@@ -2,6 +2,7 @@
 from xbrl import XBRLParser, XBRLParserException
 import re
 import logging
+import decimal
 
 
 class UfoXBRLParser(XBRLParser):
@@ -318,7 +319,7 @@ class UfoXBRLParser(XBRLParser):
             elements = correct_elements
 
             if elements:
-                return XBRLParser().trim_decimals(elements[0].text, int(xbrl.precision))
+                return decimal.Decimal(elements[0].text)
             else:
                 return 0
                 # if len(elements) > 0 and XBRLParser().is_number(elements[0].text):
