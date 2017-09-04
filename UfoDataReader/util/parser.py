@@ -318,22 +318,18 @@ class UfoXBRLParser(XBRLParser):
 
             elements = correct_elements
 
-            if elements:
-                return decimal.Decimal(elements[0].text)
+            if len(elements) > 0 and XBRLParser().is_number(elements[0].text):
+                decimals = elements[0].attrs['decimals']
+                if decimals is not None:
+                    attr_precision = decimals
+                    if xbrl.precision != 0 and xbrl.precison != attr_precision:
+                        xbrl.precision = attr_precision
+                if elements:
+                    return XBRLParser().trim_decimals(elements[0].text, int(xbrl.precision))
+                else:
+                    return 0
             else:
                 return 0
-                # if len(elements) > 0 and XBRLParser().is_number(elements[0].text):
-                #     decimals = elements[0].attrs['decimals']
-                #     if decimals is not None:
-                #         attr_precision = decimals
-                #         if xbrl.precision != 0 and xbrl.precison != attr_precision:
-                #             xbrl.precision = attr_precision
-                #     if elements:
-                #         return XBRLParser().trim_decimals(elements[0].text, int(xbrl.precision))
-                #     else:
-                #         return 0
-                # else:
-                #     return 0
         except Exception as e:
             if ignore_errors == 0:
                 raise XBRLParserException('value extraction error')
