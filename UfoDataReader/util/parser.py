@@ -232,6 +232,12 @@ class UfoXBRLParser(XBRLParser):
                 self.data_processing(cashflow_from_financing, xbrl, ignore_errors, logger, context_ids)
 
         # balance
+        shares_outstanding = \
+            xbrl.find_all(name=re.compile("(jpcrp_cor:TotalNumberOfIssuedSharesSummaryOfBusinessResults)",
+                                          re.IGNORECASE | re.MULTILINE))
+        gaap_obj.shares_outstanding = \
+            self.data_processing(shares_outstanding, xbrl, ignore_errors, logger, context_ids)
+
         assets = \
             xbrl.find_all(name=re.compile("jppfs_cor:Assets",
                                           re.IGNORECASE | re.MULTILINE))
@@ -274,11 +280,6 @@ class UfoXBRLParser(XBRLParser):
         gaap_obj.net_assets = \
             self.data_processing(net_assets, xbrl, ignore_errors, logger, context_ids)
 
-        shares_outstanding = \
-            xbrl.find_all(name=re.compile("(jpcrp_cor:TotalNumberOfIssuedSharesSummaryOfBusinessResults)",
-                                          re.IGNORECASE | re.MULTILINE))
-        gaap_obj.shares_outstanding = \
-            self.data_processing(shares_outstanding, xbrl, ignore_errors, logger, context_ids)
 
         return gaap_obj
 
