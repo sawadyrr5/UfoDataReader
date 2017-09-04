@@ -138,12 +138,12 @@ class UfoXBRLParser(XBRLParser):
             gaap_obj.per = \
                 self.data_processing(per, xbrl, ignore_errors, logger, context_ids)
 
-            cf_from_operation = \
+            cf_from_operating = \
                 xbrl.find_all(
                     name=re.compile('jpcrp_cor:NetCashProvidedByUsedInOperatingActivitiesSummaryOfBusinessResults',
                                     re.IGNORECASE | re.MULTILINE))
-            gaap_obj.cf_operation = \
-                self.data_processing(cf_from_operation, xbrl, ignore_errors, logger, context_ids)
+            gaap_obj.cf_from_operating = \
+                self.data_processing(cf_from_operating, xbrl, ignore_errors, logger, context_ids)
 
             cf_from_investing = \
                 xbrl.find_all(
@@ -211,12 +211,12 @@ class UfoXBRLParser(XBRLParser):
             gaap_obj.per = \
                 self.data_processing(per, xbrl, ignore_errors, logger, context_ids)
 
-            cf_from_operation = \
+            cf_from_operating = \
                 xbrl.find_all(
                     name=re.compile('jpcrp_cor:CashFlowsFromUsedInOperatingActivitiesUSGAAPSummaryOfBusinessResults',
                                     re.IGNORECASE | re.MULTILINE))
-            gaap_obj.cf_from_operation = \
-                self.data_processing(cf_from_operation, xbrl, ignore_errors, logger, context_ids)
+            gaap_obj.cf_from_operating = \
+                self.data_processing(cf_from_operating, xbrl, ignore_errors, logger, context_ids)
 
             cf_from_investing = \
                 xbrl.find_all(
@@ -319,7 +319,7 @@ class UfoXBRLParser(XBRLParser):
             elements = correct_elements
 
             if len(elements) > 0 and XBRLParser().is_number(elements[0].text):
-                return Decimal(elements[0].text)
+                return elements[0].text
             else:
                 return 0
 
