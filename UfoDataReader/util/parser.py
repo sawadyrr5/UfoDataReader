@@ -15,6 +15,7 @@ class UfoXBRLParser(XBRLParser):
                   xbrl,
                   doc_date="",
                   context="Current",
+                  is_quarterly=False,
                   ignore_errors=0):
 
         """
@@ -32,7 +33,10 @@ class UfoXBRLParser(XBRLParser):
         # collect all contexts up that are relevant to us
         context_ids = []
         if context in ('Current', 'Prior1', 'Prior2', 'Prior3', 'Prior4'):
-            context_ids = [context + 'YearInstant', context + 'YearDuration']
+            if is_quarterly:
+                context_ids = [context + 'YTDDuration']
+            else:
+                context_ids = [context + 'YearInstant', context + 'YearDuration']
 
         dei = self.parseDEI(xbrl)
 
@@ -408,6 +412,14 @@ class UfoXBRLParser(XBRLParser):
                                  options={'type': 'String',
                                           'no_context': True})
 
+        type_of_current_period = \
+            xbrl.find_all(name=re.compile('jpdei_cor:TypeOfCurrentPeriodDEI',
+                                          re.IGNORECASE | re.MULTILINE))
+        dei_obj.type_of_current_period = \
+            self.data_processing(type_of_current_period, xbrl, ignore_errors, logger,
+                                 options={'type': 'String',
+                                          'no_context': True})
+
         return dei_obj
 
 
@@ -487,10 +499,12 @@ class DEI(object):
                  company_name='',
                  accounting_standards='',
                  current_fy_start='',
-                 current_fy_end=''):
+                 current_fy_end='',
+                 type_of_current_period=''):
         self.edinet_code = edinet_code
         self.trading_symbol = trading_symbol
         self.company_name = company_name
         self.accounting_standards = accounting_standards
         self.current_fy_start = current_fy_start
         self.current_fy_end = current_fy_end
+        self.type_of_current_period = type_of_current_period

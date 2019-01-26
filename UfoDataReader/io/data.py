@@ -92,6 +92,7 @@ class UfoReader(_DailyBaseReader):
                 docid = el.find(self._namespace + 'docid').text
                 url = el.find(self._namespace + 'link[@type="application/zip"]').attrib['href']
                 is_yuho = any([word in title for word in ['有価証券報告書', '四半期報告書']])
+                is_quarterly =  '四半期報告書' in title
 
                 if self.fetch_xbrl:
                     r = requests.get(url)
@@ -109,7 +110,8 @@ class UfoReader(_DailyBaseReader):
                         'docid': docid,
                         'url': url,
                         'updated': updated,
-                        'is_yuho': is_yuho
+                        'is_yuho': is_yuho,
+                        'is_quarterly': is_quarterly,
                     }
                 )
         sleep(_SLEEP_TIME)
